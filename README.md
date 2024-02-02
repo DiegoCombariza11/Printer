@@ -1,5 +1,5 @@
 # Printer
-##Integrantes
+## Integrantes
 
 Diego Combariza
 
