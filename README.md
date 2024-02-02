@@ -1,7 +1,8 @@
 # Printer
 ##Integrantes
-Diego Combariza\
 
-Edwin Martinez\
+Diego Combariza
+
+Edwin Martinez
 
 Nicolas Garzón
