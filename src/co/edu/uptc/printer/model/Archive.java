@@ -5,6 +5,9 @@ public class Archive {
     private String name;
     private String extension;
 
+    public Archive() {
+    }
+
     public Archive(int pages, String name, String extension) {
         this.pages = pages;
         this.name = name;

@@ -5,12 +5,25 @@ public class FileToPrint {
     private boolean color;
     private String size;
     private int priority;
+    private int numberPages;
 
-    public FileToPrint(Archive archive, boolean color, String size, int priority) {
+    public FileToPrint() {
+    }
+
+    public FileToPrint(Archive archive, boolean color, String size, int priority, int numberPages) {
         this.archive = archive;
         this.color = color;
         this.size = size;
         this.priority = priority;
+        this.numberPages = numberPages;
+    }
+
+    public int getNumberPages() {
+        return numberPages;
+    }
+
+    public void setNumberPages(int numberPages) {
+        this.numberPages = numberPages;
     }
 
     public Archive getArchive() {
