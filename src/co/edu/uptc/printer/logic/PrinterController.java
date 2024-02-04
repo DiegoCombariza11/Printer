@@ -27,4 +27,19 @@ public class PrinterController {
     }
 
 
+    public boolean validateSheetAvailability(){
+
+        return false;
+    }
+
+
+    public void rechargeSheet(){
+
+    }
+    public String showLowSheet(){
+
+        return "";
+    }
+
+
 }
