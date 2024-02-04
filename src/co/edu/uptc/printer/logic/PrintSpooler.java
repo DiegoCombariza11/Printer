@@ -2,9 +2,9 @@ package co.edu.uptc.printer.logic;
 
 import co.edu.uptc.printer.model.FileToPrint;
 
-import java.util.PriorityQueue;
+import java.util.ArrayList;
 
 public class PrintSpooler {
-    private PriorityQueue<Integer> highPriority;
-    private PriorityQueue<Integer> lowPriority;
+    private ArrayList<Integer> tailLeavesLetter;
+    private ArrayList<Integer> tailLeavesCraft;
 }
