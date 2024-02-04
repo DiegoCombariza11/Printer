@@ -9,6 +9,16 @@ public class Printer {
     private int letterSheets;
     private int legalSheets;
 
+    public Printer(int sheetsCapacity, double cyanAmount, double mgAmount, double blkAmount, double yellowAmount, int letterSheets, int legalSheets) {
+        this.sheetsCapacity = sheetsCapacity;
+        this.cyanAmount = cyanAmount;
+        MgAmount = mgAmount;
+        BlkAmount = blkAmount;
+        this.yellowAmount = yellowAmount;
+        this.letterSheets = letterSheets;
+        this.legalSheets = legalSheets;
+    }
+
     public int getSheetsCapacity() {
         return sheetsCapacity;
     }
@@ -64,5 +74,4 @@ public class Printer {
     public void setLegalSheets(int legalSheets) {
         this.legalSheets = legalSheets;
     }
-
 }
