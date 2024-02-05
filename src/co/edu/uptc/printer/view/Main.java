@@ -30,10 +30,10 @@ public class Main {
                     e.printStackTrace();
                 }
             }
-        });
+        });a
         printing.start();*/
         do {
-            JOptionPane.showMessageDialog(null,printSpooler.printing());
+            JOptionPane.showMessageDialog(null, printSpooler.printing());
             try {
                 String aux=JOptionPane.showInputDialog("Bienvenidos" +
                         "\n 1. agregar archivo a la cola" +
@@ -61,7 +61,7 @@ public class Main {
                         }
                         int sizeDecision=JOptionPane.showOptionDialog(null,"Tamaño de la hoja","Hoja",JOptionPane.DEFAULT_OPTION,JOptionPane.QUESTION_MESSAGE,null,size,size[0]);
                         int priorityDecision=JOptionPane.showOptionDialog(null,"Prioridad del archivo","Cola",JOptionPane.DEFAULT_OPTION,JOptionPane.QUESTION_MESSAGE,null,priorityElection,priorityElection[0]);
-                        String amountSheetsDecision=(String) JOptionPane.showInputDialog(null,"Escoja las hojas a imprimir","cantidad de hojas",JOptionPane.QUESTION_MESSAGE, null,amountSheetsElection,amountSheetsElection[0]);
+                        String amountSheetsDecision=(String) JOptionPane.showInputDialog(null,"Escoja las hojas a imprimir","Cantidad de hojas",JOptionPane.QUESTION_MESSAGE, null,amountSheetsElection,amountSheetsElection[0]);
                         confirm=false;
                         String rangeSheets="";
                         if (!(amountSheetsDecision.equals("todas"))){
@@ -72,7 +72,7 @@ public class Main {
                                 }
                             }
                         }else {
-                            rangeSheets="1-"+pages;
+                            rangeSheets="0-"+pages;
                         }
                         archive.configurationFile(pages,name,color,size[sizeDecision],rangeSheets);
                         printSpooler.addFileToTail(archive.getArchiveController(),priorityElection[priorityDecision]);

@@ -22,8 +22,8 @@ public class PrintSpooler {
     }
     public String printing(){
         if (!this.spooler.isEmpty()) {
-            if (!this.printerController.checkSheets(numberPages(this.spooler.get(0).getNumberPages()),this.spooler.get(0).getSize())) {
-                if (!this.printerController.hasSufficientInk(this.spooler.get(0).isColor(),this.spooler.get(0).getSize())) {
+            if (this.printerController.checkSheets(numberPages(this.spooler.get(0).getNumberPages()),this.spooler.get(0).getSize())) {
+                if (this.printerController.hasSufficientInk(this.spooler.get(0).isColor(),this.spooler.get(0).getSize())) {
                     String result = "imprimiendo " + this.spooler.get(0).getArchive().getName() + " " + this.spooler.get(0).getNumberPages();
                     this.spooler.remove(0);
                     return result;
@@ -32,7 +32,7 @@ public class PrintSpooler {
             }
             return this.printerController.showLowSheet();
         }
-        return "";
+        return ".";
     }
     public int numberPages(String range){
         if(range.contains("-")){

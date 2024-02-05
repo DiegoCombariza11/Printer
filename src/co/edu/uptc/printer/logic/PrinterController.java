@@ -152,13 +152,13 @@ public class PrinterController {
 
     public boolean checkSheets(int requestedSheets, String size){
         if(size.equals("carta")) {
-            if (requestedSheets > this.myPrinter.getLetterSheets()) {
+            if (requestedSheets >= this.myPrinter.getLetterSheets()) {
                 return false;
             } else {
                 return true;
             }
         }else {
-            if (requestedSheets > this.myPrinter.getLegalSheets()) {
+            if (requestedSheets >= this.myPrinter.getLegalSheets()) {
                 return false;
             } else {
                 return true;
