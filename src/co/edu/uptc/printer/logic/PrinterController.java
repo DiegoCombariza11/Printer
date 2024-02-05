@@ -150,11 +150,19 @@ public class PrinterController {
         return total;
     }
 
-    public boolean checkSheets(int requestedSheets, int aviableSheets){
-        if(requestedSheets>=aviableSheets){
-            return false;
-        }else{
-            return true;
+    public boolean checkSheets(int requestedSheets, String size){
+        if(size.equals("carta")) {
+            if (requestedSheets > this.myPrinter.getLetterSheets()) {
+                return false;
+            } else {
+                return true;
+            }
+        }else {
+            if (requestedSheets > this.myPrinter.getLegalSheets()) {
+                return false;
+            } else {
+                return true;
+            }
         }
     }
 

@@ -76,7 +76,10 @@ public class Main {
                         }
                         archive.configurationFile(pages,name,color,size[sizeDecision],rangeSheets);
                         printSpooler.addFileToTail(archive.getArchiveController(),priorityElection[priorityDecision]);
-                    }
+                    }break;
+                    case 2:{
+                        JOptionPane.showMessageDialog(null,printSpooler.showTails());
+                    }break;
                 }
             }catch (NumberFormatException e){
                 JOptionPane.showMessageDialog(null,"solo numeros");
