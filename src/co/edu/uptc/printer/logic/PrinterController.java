@@ -3,34 +3,132 @@ package co.edu.uptc.printer.logic;
 import co.edu.uptc.printer.model.Printer;
 
 public class PrinterController {
+    Printer myPrinter = new Printer(100,0.0,100,100,100,20,20);
 
 
     public StringBuilder showInkPercentage(){
         StringBuilder msg = new StringBuilder();
-
-
-       return msg;
+        msg.append("Nivel de tinta negra: ").append(myPrinter.getBlkAmount()).append("\n");
+        msg.append("Nivel de tinta magenta: ").append(myPrinter.getMgAmount()).append("\n");
+        msg.append("Nivel de tinta amarilla: ").append(myPrinter.getYellowAmount()).append("\n");
+        msg.append("Nivel de tinta cian: ").append(myPrinter.getCyanAmount()).append("\n");
+        return msg;
     }
 
-    public boolean validateInkAvailability(){
-
-        return false;
-    }
-
-
-    public void rechargeInk(){
-
-    }
-    public String showLowInk(){
-
-        return "";
+    public void reloadInk(){
+        myPrinter.setYellowAmount(100.0);
+        myPrinter.setCyanAmount(100.0);
+        myPrinter.setMgAmount(100.0);
+        myPrinter.setBlkAmount(100.0);
     }
 
 
-    public boolean validateSheetAvailability(){
 
-        return false;
+    /*"NO es necesario imrpimir los mensajes, sólo sirven para validar que todo funciona xd" */
+    public String consumeInk(String size, boolean isColor) {
+       if (!isColor) {
+            if (size.equalsIgnoreCase("carta")) {
+                myPrinter.setBlkAmount(myPrinter.getBlkAmount()-0.3);
+                        } else if (size.equalsIgnoreCase("oficio")) {
+               myPrinter.setBlkAmount(myPrinter.getBlkAmount()-0.4);
+            } else {
+                return "Tamaño de papel no válido para impresión en blanco y negro.";
+            }
+        } else {
+            if (size.equalsIgnoreCase("carta")) {
+                myPrinter.setBlkAmount(myPrinter.getBlkAmount()-0.3);
+                myPrinter.setMgAmount(myPrinter.getMgAmount()-0.3);
+                myPrinter.setCyanAmount(myPrinter.getCyanAmount()-0.2);
+                myPrinter.setYellowAmount(myPrinter.getYellowAmount()-0.1);
+            } else if (size.equalsIgnoreCase("oficio")) {
+                myPrinter.setBlkAmount(myPrinter.getBlkAmount()-0.4);
+                myPrinter.setMgAmount(myPrinter.getMgAmount()-0.3);
+                myPrinter.setCyanAmount(myPrinter.getCyanAmount()-0.3);
+                myPrinter.setYellowAmount(myPrinter.getYellowAmount()-0.2);
+            } else {
+                return  "Tamaño de papel no válido para impresión a color.";
+            }
+        }
+       return "Todo funciona bien";
     }
+
+    public StringBuilder showLowInk(boolean isColor, String size) {
+        StringBuilder msg = new StringBuilder();
+        if (myPrinter.getBlkAmount() <= 2.0) {
+            msg.append(" - Nivel de tinta negra bajo (Carta)\n");
+        }
+        if (myPrinter.getMgAmount() <= 2.0) {
+            msg.append(" - Nivel de tinta magenta bajo (Carta)\n");
+        }
+        if (myPrinter.getCyanAmount() <= 2.0) {
+            msg.append(" - Nivel de tinta cian bajo (Carta)\n");
+        }
+        if (myPrinter.getYellowAmount() <= 2.0) {
+            msg.append(" - Nivel de tinta amarilla bajo (Carta)\n");
+        }
+        return msg;
+    }
+
+    public boolean hasSufficientInk(boolean isColor, String size) {
+        if (!isColor) {
+            if (size.equalsIgnoreCase("carta")) {
+                return myPrinter.getBlkAmount() >= 0.5;
+            } else if (size.equalsIgnoreCase("oficio")) {
+                return myPrinter.getBlkAmount() >= 0.6;
+            } else {
+                return false;
+            }
+        } else {
+            if (size.equalsIgnoreCase("carta")) {
+                return myPrinter.getBlkAmount() >= 0.5 &&
+                        myPrinter.getMgAmount() >= 0.5 &&
+                        myPrinter.getCyanAmount() >= 0.4 &&
+                        myPrinter.getYellowAmount() >= 0.3;
+            } else if (size.equalsIgnoreCase("oficio")) {
+                return myPrinter.getBlkAmount() >= 0.6 &&
+                        myPrinter.getMgAmount() >= 0.5 &&
+                        myPrinter.getCyanAmount() >= 0.5 &&
+                        myPrinter.getYellowAmount() >= 0.4;
+            } else {
+                return false;
+            }
+        }
+    }
+
+
+    /*
+    llamar éste método en el controlador para ver el funcionamiento
+
+    myPrinterController.print();
+
+    print() es un método de prueba y no representa el resultado final
+     */
+    public void print(){
+        String size = "carta";
+        boolean isColor = false;
+        String color = "";
+        if (!isColor){
+            color = "blanco y negro";
+        }else {
+            color = "color";
+        }
+        System.out.println(showInkPercentage());
+        System.out.println(showLowInk(isColor,size));
+        if (hasSufficientInk(isColor, size)){
+            System.out.println(consumeInk(size, isColor));
+            System.out.println(showInkPercentage());
+        }else {
+            System.out.println("Tinta insuficiente para imprimir a "+color + " en tamaño "+size);
+            System.out.println("Recargando tinta...");
+            reloadInk();
+            System.out.println(showInkPercentage());
+            System.out.println("Volviendo a imprimir");
+            System.out.println(consumeInk(size, isColor));
+            System.out.println(showInkPercentage());
+        }
+    }
+
+
 
 
     public void rechargeSheet(){
