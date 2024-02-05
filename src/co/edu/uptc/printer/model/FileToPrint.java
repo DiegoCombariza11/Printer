@@ -4,25 +4,23 @@ public class FileToPrint {
     private Archive archive;
     private boolean color;
     private String size;
-    private int priority;
-    private int numberPages;
+    private String numberPages;
 
     public FileToPrint() {
     }
 
-    public FileToPrint(Archive archive, boolean color, String size, int priority, int numberPages) {
+    public FileToPrint(Archive archive, boolean color, String size, String numberPages) {
         this.archive = archive;
         this.color = color;
         this.size = size;
-        this.priority = priority;
         this.numberPages = numberPages;
     }
 
-    public int getNumberPages() {
+    public String getNumberPages() {
         return numberPages;
     }
 
-    public void setNumberPages(int numberPages) {
+    public void setNumberPages(String numberPages) {
         this.numberPages = numberPages;
     }
 
@@ -50,11 +48,5 @@ public class FileToPrint {
         this.size = size;
     }
 
-    public int getPriority() {
-        return priority;
-    }
 
-    public void setPriority(int priority) {
-        this.priority = priority;
-    }
 }
