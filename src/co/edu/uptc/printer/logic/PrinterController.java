@@ -24,7 +24,7 @@ public class PrinterController {
 
 
 
-    /*"NO es necesario imrpimir los mensajes, sólo sirven para validar que todo funciona xd" */
+    /*"NO es necesario imrpimir los mensajes, sólo sirven para validar que everything works" */
     public String consumeInk(String size, boolean isColor) {
        if (!isColor) {
             if (size.equalsIgnoreCase("carta")) {
