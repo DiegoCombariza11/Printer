@@ -11,6 +11,8 @@ public class ArchiveController {
         this.archive=new Archive();
         this.fileToPrint=new FileToPrint();
     }
+
+
     public void createArchive(int pages, String name){
         String[] aux=name.split("\\.");
         this.archive=new Archive(pages,aux[0],aux[1]);
