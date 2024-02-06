@@ -30,70 +30,76 @@ public class PrinterController {
 
 
     /*"NO es necesario imrpimir los mensajes, sólo sirven para validar que everything works" */
-    public String consumeInk(String size, boolean isColor) {
+    public void consumeInk(String size, boolean isColor, int recuestedSheets) {
         if (!isColor) {
             if (size.equalsIgnoreCase("carta")) {
-                myPrinter.setBlkAmount(myPrinter.getBlkAmount()-0.3);
+                myPrinter.setBlkAmount(myPrinter.getBlkAmount()-0.3*recuestedSheets);
             } else if (size.equalsIgnoreCase("oficio")) {
-                myPrinter.setBlkAmount(myPrinter.getBlkAmount()-0.4);
-            } else {
-                return "Tamaño de papel no válido para impresión en blanco y negro.";
+                myPrinter.setBlkAmount(myPrinter.getBlkAmount()-0.4*recuestedSheets);
             }
         } else {
             if (size.equalsIgnoreCase("carta")) {
-                myPrinter.setBlkAmount(myPrinter.getBlkAmount()-0.3);
-                myPrinter.setMgAmount(myPrinter.getMgAmount()-0.3);
-                myPrinter.setCyanAmount(myPrinter.getCyanAmount()-0.2);
-                myPrinter.setYellowAmount(myPrinter.getYellowAmount()-0.1);
+                myPrinter.setBlkAmount(myPrinter.getBlkAmount()-0.3*recuestedSheets);
+                myPrinter.setMgAmount(myPrinter.getMgAmount()-0.3*recuestedSheets);
+                myPrinter.setCyanAmount(myPrinter.getCyanAmount()-0.2*recuestedSheets);
+                myPrinter.setYellowAmount(myPrinter.getYellowAmount()-0.1*recuestedSheets);
             } else if (size.equalsIgnoreCase("oficio")) {
-                myPrinter.setBlkAmount(myPrinter.getBlkAmount()-0.4);
-                myPrinter.setMgAmount(myPrinter.getMgAmount()-0.3);
-                myPrinter.setCyanAmount(myPrinter.getCyanAmount()-0.3);
-                myPrinter.setYellowAmount(myPrinter.getYellowAmount()-0.2);
-            } else {
-                return  "Tamaño de papel no válido para impresión a color.";
+                myPrinter.setBlkAmount(myPrinter.getBlkAmount()-0.4*recuestedSheets);
+                myPrinter.setMgAmount(myPrinter.getMgAmount()-0.3*recuestedSheets);
+                myPrinter.setCyanAmount(myPrinter.getCyanAmount()-0.3*recuestedSheets);
+                myPrinter.setYellowAmount(myPrinter.getYellowAmount()-0.2*recuestedSheets);
             }
         }
-        return "Todo funciona bien";
+    }
+    public void consumeSheets(String size, int recuestedSheets){
+        if(size.equalsIgnoreCase("carta")){
+            myPrinter.setLetterSheets(myPrinter.getLetterSheets()-recuestedSheets);
+        }else {
+            myPrinter.setLegalSheets(myPrinter.getLegalSheets()-recuestedSheets);
+        }
+    }
+    public StringBuilder showSheetsAmount(){
+        StringBuilder msg = new StringBuilder();
+        return msg.append("Hojas tamaño carta: ").append(myPrinter.getLetterSheets()).append("\n").append("Hojas tamaño oficio: ").append(myPrinter.getLegalSheets());
     }
 
     public StringBuilder showLowInk(boolean isColor, String size) {
         StringBuilder msg = new StringBuilder();
         if (myPrinter.getBlkAmount() <= 2.0) {
-            msg.append(" - Nivel de tinta negra bajo (Carta)\n");
+            msg.append(" - Nivel de tinta negra bajo\n");
         }
         if (myPrinter.getMgAmount() <= 2.0) {
-            msg.append(" - Nivel de tinta magenta bajo (Carta)\n");
+            msg.append(" - Nivel de tinta magenta bajo\n");
         }
         if (myPrinter.getCyanAmount() <= 2.0) {
-            msg.append(" - Nivel de tinta cian bajo (Carta)\n");
+            msg.append(" - Nivel de tinta cian bajo \n");
         }
         if (myPrinter.getYellowAmount() <= 2.0) {
-            msg.append(" - Nivel de tinta amarilla bajo (Carta)\n");
+            msg.append(" - Nivel de tinta amarilla bajo \n");
         }
         return msg;
     }
 
-    public boolean hasSufficientInk(boolean isColor, String size) {
+    public boolean hasSufficientInk(boolean isColor, String size, int recuestedSheets) {
         if (!isColor) {
             if (size.equalsIgnoreCase("carta")) {
-                return myPrinter.getBlkAmount() >= 0.5;
+                return myPrinter.getBlkAmount() >= 0.3*recuestedSheets;
             } else if (size.equalsIgnoreCase("oficio")) {
-                return myPrinter.getBlkAmount() >= 0.6;
+                return myPrinter.getBlkAmount() >= 0.4*recuestedSheets;
             } else {
                 return false;
             }
         } else {
             if (size.equalsIgnoreCase("carta")) {
-                return myPrinter.getBlkAmount() >= 0.5 &&
-                        myPrinter.getMgAmount() >= 0.5 &&
-                        myPrinter.getCyanAmount() >= 0.4 &&
-                        myPrinter.getYellowAmount() >= 0.3;
+                return myPrinter.getBlkAmount() >= 0.3*recuestedSheets &&
+                        myPrinter.getMgAmount() >= 0.3*recuestedSheets &&
+                        myPrinter.getCyanAmount() >= 0.2*recuestedSheets &&
+                        myPrinter.getYellowAmount() >= 0.1*recuestedSheets;
             } else if (size.equalsIgnoreCase("oficio")) {
-                return myPrinter.getBlkAmount() >= 0.6 &&
-                        myPrinter.getMgAmount() >= 0.5 &&
-                        myPrinter.getCyanAmount() >= 0.5 &&
-                        myPrinter.getYellowAmount() >= 0.4;
+                return myPrinter.getBlkAmount() >= 0.4*recuestedSheets&&
+                        myPrinter.getMgAmount() >= 0.3*recuestedSheets &&
+                        myPrinter.getCyanAmount() >= 0.3*recuestedSheets &&
+                        myPrinter.getYellowAmount() >= 0.2*recuestedSheets;
             } else {
                 return false;
             }
@@ -101,44 +107,6 @@ public class PrinterController {
     }
 
 
-    /*
-    llamar éste método en el controlador para ver el funcionamiento
-
-    myPrinterController.print();
-
-    print() es un método de prueba y no representa el resultado final
-     */
-    public void print(){
-        String size = "carta";
-        boolean isColor = false;
-        String color = "";
-        if (!isColor){
-            color = "blanco y negro";
-        }else {
-            color = "color";
-        }
-        System.out.println(showInkPercentage());
-        System.out.println(showLowInk(isColor,size));
-        if (hasSufficientInk(isColor, size)){
-            System.out.println(consumeInk(size, isColor));
-            System.out.println(showInkPercentage());
-        }else {
-            System.out.println("Tinta insuficiente para imprimir a "+color + " en tamaño "+size);
-            System.out.println("Recargando tinta...");
-            reloadInk();
-            System.out.println(showInkPercentage());
-            System.out.println("Volviendo a imprimir");
-            System.out.println(consumeInk(size, isColor));
-            System.out.println(showInkPercentage());
-        }
-    }
-
-
-
-
-    public void rechargeSheet(){
-
-    }
     public String showLowSheet(String size){
         if (size.equals("carta")) {
             return "Quedan pocas hojas carta, recargue hojas";
@@ -147,23 +115,16 @@ public class PrinterController {
         }
     }
 
-    public int totalSheet(ArrayList<Archive> documents){
-        int total = 0;
-        for (Archive document : documents) {
-            total = total + document.getPages();
-        }
-        return total;
-    }
 
     public boolean checkSheets(int requestedSheets, String size){
         if(size.equals("carta")) {
-            if (requestedSheets >= this.myPrinter.getLetterSheets()) {
+            if (requestedSheets >= this.myPrinter.getLetterSheets()+1) {
                 return false;
             } else {
                 return true;
             }
         }else {
-            if (requestedSheets >= this.myPrinter.getLegalSheets()) {
+            if (requestedSheets >= this.myPrinter.getLegalSheets()+1) {
                 return false;
             } else {
                 return true;
@@ -171,9 +132,6 @@ public class PrinterController {
         }
     }
 
-    public int stablishAmountOfSheets(int requestedSheets, int aviableSheets){
-        return aviableSheets-requestedSheets;
-    }
 
     public void addSheets(){
         myPrinter.setLegalSheets(250);

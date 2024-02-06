@@ -25,11 +25,14 @@ public class View {
         do {
             try {
                 String input = JOptionPane.showInputDialog("Bienvenidos" +
-                        "\n 1. agregar archivo a la cola" +
+                        "\n 1. Agregar archivo a la cola" +
                         "\n 2. ver cola" +
                         "\n 3. Imprimir" +
                         "\n 4: Recargar tinta" +
-                        "\n 5: Recargar hojas");
+                        "\n 5: Recargar hojas" +
+                        "\n 6: Mostrar niveles de tinta" +
+                        "\n 7: Mostrar número de hojas" +
+                        "\n 8: Salir");
                 int option = Integer.parseInt(input);
                 switch (option) {
                     case 1: {
@@ -39,14 +42,18 @@ public class View {
                             name = JOptionPane.showInputDialog("Digite el nombre del archivo con su extension (extensiones validas: .docs, .docx, .pdf, .pptx, .png, .jpg)");
                             if (name.contains(".") && (name.contains("docs") || name.contains("docx") || name.contains("pdf") || name.contains("pptc") || name.contains("png") || name.contains("jpg"))) {
                                 confirm = true;
+                            } else {
+                                myWarningMessages.inputWarning("Extensión no válida");
                             }
                         }
-                        confirm=false;
-                        int pages=0;
+                        confirm = false;
+                        int pages = 0;
                         while (!confirm) {
                             pages = Integer.parseInt(JOptionPane.showInputDialog("Digite el numero de paginas del archivo"));
-                            if (pages>0){
-                                confirm=true;
+                            if (pages > 0&&pages <=250) {
+                                confirm = true;
+                            } else {
+                                myWarningMessages.inputWarning("Número de paginas inválida");
                             }
                         }
                         int colorDecision = JOptionPane.showOptionDialog(null, "Tipo de color de la impresion", "Color", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, colorElection, colorElection[0]);
@@ -59,15 +66,26 @@ public class View {
                         String amountSheetsDecision = (String) JOptionPane.showInputDialog(null, "Escoja las hojas a imprimir", "cantidad de hojas", JOptionPane.QUESTION_MESSAGE, null, amountSheetsElection, amountSheetsElection[0]);
                         confirm = false;
                         String rangeSheets = "";
-                        if (!(amountSheetsDecision.equals("todas"))) {
+                        if (amountSheetsDecision.equals("todas")) {
+                            rangeSheets = "0-" + pages;
+                        }else if (amountSheetsDecision.equals("un rango")) {
                             while (!confirm) {
-                                rangeSheets = JOptionPane.showInputDialog("Digite el numero de hojas separado por comas si es especifico, si es un rango por un guion");
-                                if (rangeSheets.matches("[0-9,-]+")) {
-                                    confirm=true;
+                                rangeSheets = JOptionPane.showInputDialog("Digite el numero de hojas separado por un guion");
+                                if (rangeSheets.matches("[0-9-]+")&& !(printSpooler.numberPages(rangeSheets,pages)==0)) {
+                                    confirm = true;
+                                } else {
+                                    myWarningMessages.inputWarning("Rango no válido");
+                                }
                             }
+                        }else if (amountSheetsDecision.equals("# de paginas especificas")) {
+                            while (!confirm) {
+                                rangeSheets = JOptionPane.showInputDialog("Digite el numero de hojas separado por comas");
+                                if (rangeSheets.matches("[0-9,]+")&&!(printSpooler.numberPages(rangeSheets,pages)==0) ) {
+                                    confirm = true;
+                                } else {
+                                    myWarningMessages.inputWarning("hojas no validas");
+                                }
                             }
-                        }else{
-                            rangeSheets = "1-" + pages;
                         }
                         archive.configurationFile(pages, name, color, size[sizeDecision], rangeSheets);
                         printSpooler.addFileToTail(archive.getArchiveController(), priorityElection[priorityDecision]);
@@ -92,16 +110,23 @@ public class View {
                         break;
                     }
                     case 6: {
+                        myWarningMessages.showInkLevel(String.valueOf(printSpooler.getPrinterController().showInkPercentage()));
+                        break;
+                    }
+                    case 7:{
+                        myWarningMessages.showSheetsAmount(String.valueOf(printSpooler.getPrinterController().showSheetsAmount()));
+                        break;
+                    }
+                    case 8: {
                         flag = true;
                     }
                 }
-            }catch (NumberFormatException | NullPointerException e){
+            } catch (NumberFormatException | NullPointerException e) {
                 int input = (JOptionPane.showConfirmDialog(null, "Desea salir?"));
-                if (input==0){
+                if (input == 0) {
                     JOptionPane.showMessageDialog(null, "Adios");
                     flag = true;
-                }
-                else {
+                } else {
                     JOptionPane.showMessageDialog(null, "Continue con lo suyo");
                 }
             }
