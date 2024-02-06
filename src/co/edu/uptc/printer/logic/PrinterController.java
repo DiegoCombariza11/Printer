@@ -2,12 +2,13 @@ package co.edu.uptc.printer.logic;
 
 import co.edu.uptc.printer.model.Archive;
 import co.edu.uptc.printer.model.Printer;
+import co.edu.uptc.printer.view.WarningMessages;
 
 import java.util.ArrayList;
 
 public class PrinterController {
     Printer myPrinter = new Printer(100,0.0,100,100,100,20,20);
-
+    WarningMessages myWarningMessages = new WarningMessages();
 
     public StringBuilder showInkPercentage(){
         StringBuilder msg = new StringBuilder();
@@ -23,17 +24,18 @@ public class PrinterController {
         myPrinter.setCyanAmount(100.0);
         myPrinter.setMgAmount(100.0);
         myPrinter.setBlkAmount(100.0);
+        myWarningMessages.reloadInk();
     }
 
 
 
     /*"NO es necesario imrpimir los mensajes, sólo sirven para validar que everything works" */
     public String consumeInk(String size, boolean isColor) {
-       if (!isColor) {
+        if (!isColor) {
             if (size.equalsIgnoreCase("carta")) {
                 myPrinter.setBlkAmount(myPrinter.getBlkAmount()-0.3);
-                        } else if (size.equalsIgnoreCase("oficio")) {
-               myPrinter.setBlkAmount(myPrinter.getBlkAmount()-0.4);
+            } else if (size.equalsIgnoreCase("oficio")) {
+                myPrinter.setBlkAmount(myPrinter.getBlkAmount()-0.4);
             } else {
                 return "Tamaño de papel no válido para impresión en blanco y negro.";
             }
@@ -52,7 +54,7 @@ public class PrinterController {
                 return  "Tamaño de papel no válido para impresión a color.";
             }
         }
-       return "Todo funciona bien";
+        return "Todo funciona bien";
     }
 
     public StringBuilder showLowInk(boolean isColor, String size) {
@@ -150,11 +152,19 @@ public class PrinterController {
         return total;
     }
 
-    public boolean checkSheets(int requestedSheets, int aviableSheets){
-        if(requestedSheets>=aviableSheets){
-            return false;
-        }else{
-            return true;
+    public boolean checkSheets(int requestedSheets, String size){
+        if(size.equals("carta")) {
+            if (requestedSheets >= this.myPrinter.getLetterSheets()) {
+                return false;
+            } else {
+                return true;
+            }
+        }else {
+            if (requestedSheets >= this.myPrinter.getLegalSheets()) {
+                return false;
+            } else {
+                return true;
+            }
         }
     }
 

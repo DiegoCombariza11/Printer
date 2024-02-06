@@ -8,15 +8,21 @@ import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Main {
+
     public static void main(String[] args) {
+        View myView = new View();
+        myView.menu();
+
+/*
         final boolean[] exit = {false};
         ArchiveController archive=new ArchiveController();
         PrintSpooler printSpooler=new PrintSpooler();
+        WarningMessages myWarningMessages = new WarningMessages();
         String colorElection[]={"blanco y negro","color"};
         String size[]={"carta","oficio"};
         String priorityElection[]={"no importa","Rapido"};
         String amountSheetsElection[]={"todas","un rango","# de paginas especificas"};
-       /* Thread printing = new Thread(() -> {
+        /* Thread printing = new Thread(() -> {
             while (!exit[0]) {
                 if (!printSpooler.printing().equals("")) {
                     SwingUtilities.invokeLater(() -> {
@@ -31,9 +37,12 @@ public class Main {
                 }
             }
         });
-        printing.start();*/
+        printing.start();
+
+
+
         do {
-            JOptionPane.showMessageDialog(null,printSpooler.printing());
+
             try {
                 String aux=JOptionPane.showInputDialog("Bienvenidos" +
                         "\n 1. agregar archivo a la cola" +
@@ -87,6 +96,8 @@ public class Main {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }*/
+
+
     }
 
 }
