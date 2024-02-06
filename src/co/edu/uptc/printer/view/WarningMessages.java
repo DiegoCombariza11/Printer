@@ -6,8 +6,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class WarningMessages {
-
-
     public  void lowInkWarning(String msg){
         Runnable warningMsg = () -> {
             JOptionPane.showMessageDialog(null, msg);
@@ -57,5 +55,12 @@ public class WarningMessages {
         thread5.start();
     }
 
+    public void reloadSheets(){
+        Runnable reloadSheetsMsg = () -> {
+            JOptionPane.showMessageDialog(null, "Hojas recargadas");
+        };
+        Thread thread6 = new Thread(reloadSheetsMsg);
+        thread6.start();
+    }
 
 }

@@ -36,12 +36,19 @@ public class View {
                         boolean confirm = false;
                         String name = "";
                         while (!confirm) {
-                            name = JOptionPane.showInputDialog("Digite el nombre del archivo con su extension (ejemplo.exe)");
-                            if (name.contains(".")) {
+                            name = JOptionPane.showInputDialog("Digite el nombre del archivo con su extension (extensiones validas: .docs, .docx, .pdf, .pptx, .png, .jpg)");
+                            if (name.contains(".") && (name.contains("docs") || name.contains("docx") || name.contains("pdf") || name.contains("pptc") || name.contains("png") || name.contains("jpg"))) {
                                 confirm = true;
                             }
                         }
-                        int pages = Integer.parseInt(JOptionPane.showInputDialog("Digite el numero de paginas del archivo"));
+                        confirm=false;
+                        int pages=0;
+                        while (!confirm) {
+                            pages = Integer.parseInt(JOptionPane.showInputDialog("Digite el numero de paginas del archivo"));
+                            if (pages>0){
+                                confirm=true;
+                            }
+                        }
                         int colorDecision = JOptionPane.showOptionDialog(null, "Tipo de color de la impresion", "Color", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, colorElection, colorElection[0]);
                         boolean color = true;
                         if (colorDecision == 0) {
@@ -55,11 +62,11 @@ public class View {
                         if (!(amountSheetsDecision.equals("todas"))) {
                             while (!confirm) {
                                 rangeSheets = JOptionPane.showInputDialog("Digite el numero de hojas separado por comas si es especifico, si es un rango por un guion");
-                                if (rangeSheets.contains("-") || rangeSheets.contains(",")) {
-                                    confirm = true;
-                                }
+                                if (rangeSheets.matches("[0-9,-]+")) {
+                                    confirm=true;
                             }
-                        } else {
+                            }
+                        }else{
                             rangeSheets = "1-" + pages;
                         }
                         archive.configurationFile(pages, name, color, size[sizeDecision], rangeSheets);
@@ -79,18 +86,23 @@ public class View {
                         printSpooler.getPrinterController().reloadInk();
                         break;
                     }
+                    case 5: {
+                        //recargar hojas
+                        printSpooler.getPrinterController().addSheets();
+                        break;
+                    }
                     case 6: {
                         flag = true;
                     }
                 }
-            }catch (NumberFormatException e){
+            }catch (NumberFormatException | NullPointerException e){
                 int input = (JOptionPane.showConfirmDialog(null, "Desea salir?"));
                 if (input==0){
-                    JOptionPane.showMessageDialog(null, "Adios, popó");
+                    JOptionPane.showMessageDialog(null, "Adios");
                     flag = true;
                 }
                 else {
-                    JOptionPane.showMessageDialog(null, "oka, opción inválida, gil");
+                    JOptionPane.showMessageDialog(null, "Continue con lo suyo");
                 }
             }
 

@@ -7,7 +7,7 @@ import co.edu.uptc.printer.view.WarningMessages;
 import java.util.ArrayList;
 
 public class PrinterController {
-    Printer myPrinter = new Printer(100,0.0,100,100,100,20,20);
+    Printer myPrinter = new Printer(500,0.0,100,100,100,20,20);
     WarningMessages myWarningMessages = new WarningMessages();
 
     public StringBuilder showInkPercentage(){
@@ -139,9 +139,12 @@ public class PrinterController {
     public void rechargeSheet(){
 
     }
-    public String showLowSheet(){
-
-        return "";
+    public String showLowSheet(String size){
+        if (size.equals("carta")) {
+            return "Quedan pocas hojas carta, recargue hojas";
+        }else {
+            return "Quedan pocas hojas oficio, recargue hojas";
+        }
     }
 
     public int totalSheet(ArrayList<Archive> documents){
@@ -172,8 +175,10 @@ public class PrinterController {
         return aviableSheets-requestedSheets;
     }
 
-    public int addSheets(int newSheets, int aviableSheets){
-        return newSheets+aviableSheets;
+    public void addSheets(){
+        myPrinter.setLegalSheets(250);
+        myPrinter.setLetterSheets(250);
+        myWarningMessages.reloadSheets();
     }
 
 
