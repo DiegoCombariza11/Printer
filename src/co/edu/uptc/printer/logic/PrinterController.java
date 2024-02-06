@@ -60,7 +60,7 @@ public class PrinterController {
 
     public ArrayList<Integer> refillSheets(int lenght){
         ArrayList<Integer> filledPages= new ArrayList<>();
-        for (int i=0; i<filledPages.size();i++){
+        for (int i=0; i<lenght;i++){
             filledPages.add(i+1);
         }
         return filledPages;
@@ -78,5 +78,9 @@ public class PrinterController {
             }
         }
         return sheets;
+    }
+
+    public void selectSheets(ArrayList<Integer> sheets, int sheet){
+        sheets.add(sheet);
     }
 }
