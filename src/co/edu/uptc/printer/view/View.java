@@ -96,7 +96,11 @@ public class View {
                         break;
                     }
                     case 3: {
+
+
                         printSpooler.printing();
+
+
                         break;
 
                     }

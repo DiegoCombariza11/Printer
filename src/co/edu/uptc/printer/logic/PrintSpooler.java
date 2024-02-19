@@ -9,7 +9,8 @@ public class PrintSpooler {
     private WarningMessages warningMessages;
     private ArrayList<FileToPrint> spooler;
     private PrinterController printerController;
-
+    private int index;
+    private int i;
     public PrintSpooler() {
         this.spooler = new ArrayList<>();
         this.printerController = new PrinterController();
@@ -27,20 +28,24 @@ public class PrintSpooler {
 
     public void printing() {
         if (!this.spooler.isEmpty()) {
-            if (this.printerController.checkSheets(numberPages(this.spooler.get(0).getNumberPages(),this.spooler.get(0).getArchive().getPages()), this.spooler.get(0).getSize())) {
-                if (this.printerController.hasSufficientInk(this.spooler.get(0).isColor(), this.spooler.get(0).getSize(),numberPages(this.spooler.get(0).getNumberPages(),this.spooler.get(0).getArchive().getPages()))) {
-                    StringBuilder msg = new StringBuilder();
-                    msg.append("imprimiendo ").append(this.spooler.get(0).getArchive().getName()).append(" ").append(this.spooler.get(0).getNumberPages());
-                    printerController.consumeInk(this.spooler.get(0).getSize(),this.spooler.get(0).isColor(),numberPages(this.spooler.get(0).getNumberPages(),this.spooler.get(0).getArchive().getPages()));
-                    printerController.consumeSheets(this.spooler.get(0).getSize(), numberPages(this.spooler.get(0).getNumberPages(),this.spooler.get(0).getArchive().getPages()));
-                    this.spooler.remove(0);
-                    warningMessages.printingFile(String.valueOf(msg));
+                if (this.printerController.checkSheets(this.spooler.get(0).getSize())) {
+                    if (this.printerController.hasSufficientInk(this.spooler.get(0).isColor(), this.spooler.get(0).getSize(),numberPages(this.spooler.get(0).getNumberPages(),this.spooler.get(0).getArchive().getPages()))) {
+                        StringBuilder msg = new StringBuilder();
+                        msg.append("imprimiendo página: ").append(i).append(" de: ").append(this.spooler.get(0).getArchive().getName()).append(" ").append(this.spooler.get(0).getNumberPages());
+                        printerController.consumeInk(this.spooler.get(0).getSize(),this.spooler.get(0).isColor(),1);
+                        printerController.consumeSheets(this.spooler.get(0).getSize(), 1);
+                        index--;
+                        if (index==0){
+                            this.spooler.remove(0);
+                        }
+                        warningMessages.printingFile(String.valueOf(msg));
+                    } else {
+                        warningMessages.lowInkWarning(String.valueOf(this.printerController.showLowInk(this.spooler.get(0).isColor(), this.spooler.get(0).getSize())));
+
+                    }
                 } else {
-                    warningMessages.lowInkWarning(String.valueOf(this.printerController.showLowInk(this.spooler.get(0).isColor(), this.spooler.get(0).getSize())));
+                    warningMessages.lowSheetWarning(this.printerController.showLowSheet(this.spooler.get(0).getSize()));
                 }
-            } else {
-                warningMessages.lowSheetWarning(this.printerController.showLowSheet(this.spooler.get(0).getSize()));
-            }
         } else {
             warningMessages.emptySpool("El spooler está vacío. No hay archivos para imprimir.");
         }
