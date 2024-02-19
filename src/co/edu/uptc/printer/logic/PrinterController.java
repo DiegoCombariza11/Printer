@@ -116,22 +116,23 @@ public class PrinterController {
     }
 
 
-    public boolean checkSheets(int requestedSheets, String size){
+    public boolean checkSheets(String size){
         if(size.equals("carta")) {
-            if (requestedSheets >= this.myPrinter.getLetterSheets()+1) {
+            if (0 >= this.myPrinter.getLetterSheets()+1) {
                 return false;
             } else {
+                this.myPrinter.setLetterSheets(this.myPrinter.getLetterSheets()-1);
                 return true;
             }
         }else {
-            if (requestedSheets >= this.myPrinter.getLegalSheets()+1) {
+            if (0 >= this.myPrinter.getLegalSheets()+1) {
                 return false;
             } else {
+                this.myPrinter.setLegalSheets(this.myPrinter.getLegalSheets()-1);
                 return true;
             }
         }
     }
-
 
     public void addSheets(){
         myPrinter.setLegalSheets(250);
