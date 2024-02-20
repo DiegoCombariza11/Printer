@@ -1,17 +1,24 @@
 package co.edu.uptc.printer.presentation;
 
+import co.edu.uptc.printer.logic.PrintSpooler;
+
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-public class MessageWarning extends JFrame {
+public class MessageWarning extends JFrame implements ActionListener {
     private JPanel mainPanel;
     private JLabel msg;
     private JButton confirm;
     private JButton cancel;
-    public MessageWarning(){
-
+    private PrintSpooler printSpooler;
+    private String aux;
+    public MessageWarning(PrintSpooler ps){
+        this.printSpooler=ps;
     }
     public void created(String text){
+        aux=text;
         this.setSize(300,150);
         this.setLocationRelativeTo(null);
         this.setUndecorated(true);
@@ -35,6 +42,23 @@ public class MessageWarning extends JFrame {
         cancel.setPreferredSize(new Dimension(100,25));
         buttons.add(confirm);
         buttons.add(cancel);
+        confirm.addActionListener(this);
+        cancel.addActionListener(this);
         return buttons;
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if(e.getSource() == confirm){
+            if(aux.contains("hojas")){
+                printSpooler.getPrinterController().addSheets();
+
+            }
+            if (aux.contains("tinta")){
+                printSpooler.getPrinterController().reloadInk();
+            }
+        }else if (e.getSource() == cancel){
+            this.dispose();
+        }
     }
 }

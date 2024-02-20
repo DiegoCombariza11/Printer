@@ -14,7 +14,7 @@ public class PrintSpooler {
     public PrintSpooler() {
         this.spooler = new ArrayList<>();
         this.printerController = new PrinterController();
-        this.warningMessages = new WarningMessages();
+        this.warningMessages = new WarningMessages(this);
         index=0;
         i=0;
     }
