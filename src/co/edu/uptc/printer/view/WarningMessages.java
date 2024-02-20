@@ -2,6 +2,7 @@ package co.edu.uptc.printer.view;
 
 import co.edu.uptc.printer.logic.PrintSpooler;
 import co.edu.uptc.printer.presentation.MessageWarning;
+import co.edu.uptc.printer.presentation.Print;
 
 import javax.swing.*;
 import java.awt.*;
@@ -49,14 +50,15 @@ public class WarningMessages {
 
     public void printingFile(String msg) {
         Runnable printingMsg = () -> {
-            JOptionPane optionPane = new JOptionPane(msg, JOptionPane.INFORMATION_MESSAGE);
+            /*JOptionPane optionPane = new JOptionPane(msg, JOptionPane.INFORMATION_MESSAGE);
             JDialog dialog = optionPane.createDialog("Printing Status");
             dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-            dialog.setVisible(true);
-
+            dialog.setVisible(true);*/
+            Print print=new Print(msg);
             try {
                 Thread.sleep(3000);
-                dialog.dispose();
+                //dialog.dispose();
+                print.dispose();
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
