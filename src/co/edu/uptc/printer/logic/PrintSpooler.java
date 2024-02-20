@@ -15,6 +15,8 @@ public class PrintSpooler {
         this.spooler = new ArrayList<>();
         this.printerController = new PrinterController();
         this.warningMessages = new WarningMessages();
+        index=0;
+        i=0;
     }
 
 
@@ -25,7 +27,10 @@ public class PrintSpooler {
             this.spooler.add(fileToPrint);
         }
     }
-
+    public void resetPosition(){
+        i=0;
+        index=numberPages(this.spooler.get(0).getNumberPages(),this.spooler.get(0).getArchive().getPages());
+    }
     public void printing() {
         if (!this.spooler.isEmpty()) {
                 if (this.printerController.checkSheets(this.spooler.get(0).getSize())) {
