@@ -15,6 +15,7 @@ public class Print extends JFrame implements ActionListener {
         this.setLocation(550,100);
         this.setUndecorated(true);
         main=new JPanel(new GridLayout(2,1));
+        main.setLocation(550,100);
         msg=new JLabel(text);
         msg.setLocation(150,20);
         msg.setForeground(Color.BLUE);

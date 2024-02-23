@@ -17,7 +17,7 @@ public class MessageWarning extends JFrame implements ActionListener {
     public MessageWarning(PrintSpooler ps){
         this.printSpooler=ps;
     }
-    public void created(String text){
+    public void createdAlertReload(String text){
         aux=text;
         this.setSize(300,150);
         this.setLocationRelativeTo(null);
@@ -31,6 +31,21 @@ public class MessageWarning extends JFrame implements ActionListener {
         textPanel.setBorder(BorderFactory.createEmptyBorder(30,0,0,0));
         mainPanel.add(textPanel, BorderLayout.CENTER);
         mainPanel.add(settingsButtons());
+        this.add(mainPanel);
+        this.setVisible(true);
+    }
+    public void cratedMessage(String text){
+        this.setSize(300,150);
+        this.setLocationRelativeTo(null);
+        this.setResizable(false);
+        mainPanel=new JPanel(new GridLayout(2,1));
+        msg=new JLabel(text);
+        msg.setLocation(150,20);
+        msg.setForeground(Color.ORANGE);
+        JPanel textPanel=new JPanel();
+        textPanel.add(msg, BorderLayout.CENTER);
+        textPanel.setBorder(BorderFactory.createEmptyBorder(30,0,0,0));
+        mainPanel.add(textPanel, BorderLayout.CENTER);
         this.add(mainPanel);
         this.setVisible(true);
     }
