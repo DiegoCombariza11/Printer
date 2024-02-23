@@ -17,6 +17,10 @@ public class MessageWarning extends JFrame implements ActionListener {
     public MessageWarning(PrintSpooler ps){
         this.printSpooler=ps;
     }
+
+    public MessageWarning(){
+
+    }
     public void createdAlertReload(String text){
         aux=text;
         this.setSize(300,150);
@@ -41,7 +45,7 @@ public class MessageWarning extends JFrame implements ActionListener {
         mainPanel=new JPanel(new GridLayout(2,1));
         msg=new JLabel(text);
         msg.setLocation(150,20);
-        msg.setForeground(Color.ORANGE);
+        msg.setForeground(Color.RED);
         JPanel textPanel=new JPanel();
         textPanel.add(msg, BorderLayout.CENTER);
         textPanel.setBorder(BorderFactory.createEmptyBorder(30,0,0,0));
@@ -67,7 +71,6 @@ public class MessageWarning extends JFrame implements ActionListener {
         if(e.getSource() == confirm){
             if(aux.contains("hojas")){
                 printSpooler.getPrinterController().addSheets();
-
             }
             if (aux.contains("tinta")){
                 printSpooler.getPrinterController().reloadInk();
