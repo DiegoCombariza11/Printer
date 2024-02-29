@@ -97,6 +97,7 @@ public class MainWindow extends JFrame {
         checkSpooler.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                myWarningMessages=new WarningMessages();
                 printSpooler=addToSpoolerInterface.getPrintSpooler();
                 myWarningMessages.inputWarning(printSpooler.showTails().toString());
                 setState(true);

@@ -39,11 +39,10 @@ public class PrintSpooler {
                     if (this.printerController.hasSufficientInk(this.spooler.get(0).isColor(), this.spooler.get(0).getSize(),numberPages(this.spooler.get(0).getNumberPages(),this.spooler.get(0).getArchive().getPages()))) {
                         while (index>=0) {
                             StringBuilder msg = new StringBuilder();
-                            msg.append("imprimiendo página: ").append(i).append(" de: ").append(this.spooler.get(0).getArchive().getName()).append(" ").append(this.spooler.get(0).getNumberPages());
+                            msg.append("imprimiendo página: ").append(i).append(" de ").append(index).append(": ").append(this.spooler.get(0).getArchive().getName());
                             printerController.consumeInk(this.spooler.get(0).getSize(), this.spooler.get(0).isColor(), 1);
                             printerController.consumeSheets(this.spooler.get(0).getSize(), 1);
                             index--;
-                            System.out.println(index);
                             i++;
                             warningMessages.printingFile(String.valueOf(msg));
                             if (index == 0) {
@@ -93,7 +92,6 @@ public class PrintSpooler {
         }
         return 0;
     }
-
     public StringBuilder showTails() {
         StringBuilder result =new StringBuilder();
         if (this.spooler.isEmpty()) {

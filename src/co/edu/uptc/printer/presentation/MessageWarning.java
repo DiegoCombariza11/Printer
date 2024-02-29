@@ -52,6 +52,7 @@ public class MessageWarning extends JFrame implements ActionListener {
         mainPanel.add(textPanel, BorderLayout.CENTER);
         this.add(mainPanel);
         this.setVisible(true);
+        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
     public JPanel settingsButtons(){
         JPanel buttons=new JPanel();
