@@ -9,6 +9,7 @@ import javax.swing.*;
 public class WarningMessages {
     private MessageWarning mw;
     private MessageWarning myMessageWarning;
+    Print print=new Print();
 
     public WarningMessages() {
         this.myMessageWarning=new MessageWarning();
@@ -40,31 +41,30 @@ public class WarningMessages {
     public void lowInkWarning(String msg) {
         Runnable warningMsg = () -> {
             //JOptionPane.showMessageDialog(null, msg);
-            myMessageWarning.createdAlertReload(msg);
+            mw.createdAlertReload(msg);
         };
         Thread thread1 = new Thread(warningMsg);
         thread1.start();
     }
 
-    public void printingFile(String msg) {
+    public Runnable printingFile(String msg) throws InterruptedException {
         Runnable printingMsg = () -> {
-            /*JOptionPane optionPane = new JOptionPane(msg, JOptionPane.INFORMATION_MESSAGE);
-            JDialog dialog = optionPane.createDialog("Printing Status");
-            dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-            dialog.setVisible(true);*/
-            Print print=new Print(msg);
+                print.create(msg);
+
             try {
                 Thread.sleep(3000);
                 //dialog.dispose();
-                print.dispose();
+                //print.dispose();
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
         };
 
-        Thread thread2 = new Thread(printingMsg);
-        thread2.start();
+        //Thread thread2 = new Thread(printingMsg);
+        return printingMsg;
     }
+
+
 
     public void lowSheetWarning(String msg) {
         Runnable lowSheetMsg = () -> {
@@ -87,7 +87,7 @@ public class WarningMessages {
     public void reloadInk() {
         Runnable reloadInkMsg = () -> {
             //JOptionPane.showMessageDialog(null, "Tinta recargada");
-            mw.cratedMessage("Tinta recargada");
+            myMessageWarning.cratedMessage("Tinta recargada");
         };
         Thread thread5 = new Thread(reloadInkMsg);
         thread5.start();
@@ -104,7 +104,9 @@ public class WarningMessages {
 
     public void inputWarning(String msg) {
         Runnable extensionWarningMsg = () -> {
-            myMessageWarning.cratedMessage(msg);
+            SwingUtilities.invokeLater(() -> {
+                myMessageWarning.cratedMessage(msg);
+            });
         };
         Thread thread7 = new Thread(extensionWarningMsg);
         thread7.start();

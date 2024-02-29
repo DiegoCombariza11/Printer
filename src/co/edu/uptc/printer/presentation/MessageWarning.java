@@ -42,6 +42,7 @@ public class MessageWarning extends JFrame implements ActionListener {
         this.setSize(300,150);
         this.setLocationRelativeTo(null);
         this.setResizable(false);
+        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         mainPanel=new JPanel(new GridLayout(2,1));
         msg=new JLabel(text);
         msg.setLocation(150,20);
@@ -72,9 +73,11 @@ public class MessageWarning extends JFrame implements ActionListener {
         if(e.getSource() == confirm){
             if(aux.contains("hojas")){
                 printSpooler.getPrinterController().addSheets();
+                this.dispose();
             }
             if (aux.contains("tinta")){
                 printSpooler.getPrinterController().reloadInk();
+                this.dispose();
             }
         }else if (e.getSource() == cancel){
             this.dispose();

@@ -7,7 +7,7 @@ import co.edu.uptc.printer.view.WarningMessages;
 import java.util.ArrayList;
 
 public class PrinterController {
-    Printer myPrinter = new Printer(500,0.0,100,100,100,20,20);
+    Printer myPrinter = new Printer(500,100,100,100,100,20,20);
     WarningMessages myWarningMessages = new WarningMessages();
 
     public StringBuilder showInkPercentage(){
@@ -67,15 +67,19 @@ public class PrinterController {
         StringBuilder msg = new StringBuilder();
         if (myPrinter.getBlkAmount() <= 2.0) {
             msg.append(" - Nivel de tinta negra bajo\n");
+            msg.append(", desea recargar la tinta");
         }
         if (myPrinter.getMgAmount() <= 2.0) {
             msg.append(" - Nivel de tinta magenta bajo\n");
+            msg.append(", desea recargar la tinta");
         }
         if (myPrinter.getCyanAmount() <= 2.0) {
             msg.append(" - Nivel de tinta cian bajo \n");
+            msg.append(", desea recargar la tinta");
         }
         if (myPrinter.getYellowAmount() <= 2.0) {
             msg.append(" - Nivel de tinta amarilla bajo \n");
+            msg.append(", desea recargar la tinta");
         }
         return msg;
     }
@@ -108,7 +112,7 @@ public class PrinterController {
 
 
     public String showLowSheet(String size){
-        if (size.equals("carta")) {
+        if (size.equalsIgnoreCase("carta")) {
             return "Quedan pocas hojas carta, recargue hojas";
         }else {
             return "Quedan pocas hojas oficio, recargue hojas";
@@ -118,14 +122,14 @@ public class PrinterController {
 
     public boolean checkSheets(String size){
         if(size.equals("carta")) {
-            if (0 >= this.myPrinter.getLetterSheets()+1) {
+            if (0 >= this.myPrinter.getLetterSheets()) {
                 return false;
             } else {
                 this.myPrinter.setLetterSheets(this.myPrinter.getLetterSheets()-1);
                 return true;
             }
         }else {
-            if (0 >= this.myPrinter.getLegalSheets()+1) {
+            if (0 >= this.myPrinter.getLegalSheets()) {
                 return false;
             } else {
                 this.myPrinter.setLegalSheets(this.myPrinter.getLegalSheets()-1);

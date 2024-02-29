@@ -96,7 +96,11 @@ public class View {
                         break;
                     }
                     case 3: {
+
+
                         printSpooler.printing();
+
+
                         break;
 
                     }
@@ -129,6 +133,8 @@ public class View {
                 } else {
                     JOptionPane.showMessageDialog(null, "Continue con lo suyo");
                 }
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
             }
 
         } while (!flag);

@@ -24,6 +24,7 @@ public class MainWindow extends JFrame {
     public MainWindow(){
         printSpooler = new PrintSpooler();
         myWarningMessages = new WarningMessages();
+        addToSpoolerInterface = new AddToSpooler(this,this.printSpooler);
         setTitle("Impresiones capa");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLocationRelativeTo(null);
@@ -64,7 +65,6 @@ public class MainWindow extends JFrame {
     public  JPanel addButtons(){
         JPanel buttons = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 0));
         buttons.setBorder(BorderFactory.createEmptyBorder(10,0,10,0));
-
         addToSpooler = new JButton("Añadir archivo");
         print = new JButton("Imprimir");
         checkSpooler = new JButton("Cola de impresion");
@@ -75,12 +75,12 @@ public class MainWindow extends JFrame {
         buttons.add(print,BorderLayout.CENTER);
         buttons.add(checkSpooler, BorderLayout.CENTER);
 
-        addToSpoolerInterface = new AddToSpooler(this,printSpooler);
         addToSpooler.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                addToSpoolerInterface = new AddToSpooler(returnMainWindow(),printSpooler);
                 addToSpoolerInterface.createWindow();
-                setState(false);
+              //  setState(false);
                 addToSpoolerInterface.setVisible(true);
             }
         });
@@ -89,7 +89,11 @@ public class MainWindow extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 printSpooler=addToSpoolerInterface.getPrintSpooler();
                 printSpooler.resetPosition();
-                printSpooler.printing();
+                try {
+                    printSpooler.printing();
+                } catch (InterruptedException ex) {
+                    throw new RuntimeException(ex);
+                }
                 //addToSpoolerInterface.setPrintSpooler(printSpooler);
             }
         });
@@ -106,10 +110,9 @@ public class MainWindow extends JFrame {
         return buttons;
     }
 
-
-
-
-
+    public MainWindow returnMainWindow(){
+        return this;
+    }
     public void setState(boolean state){
                 setVisible(state);
     }

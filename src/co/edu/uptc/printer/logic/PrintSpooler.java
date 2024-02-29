@@ -5,6 +5,8 @@ import co.edu.uptc.printer.view.WarningMessages;
 
 import java.util.ArrayList;
 
+import static java.lang.Thread.sleep;
+
 public class PrintSpooler {
     private WarningMessages warningMessages;
     private ArrayList<FileToPrint> spooler;
@@ -16,7 +18,7 @@ public class PrintSpooler {
         this.printerController = new PrinterController();
         this.warningMessages = new WarningMessages(this);
         index=0;
-        i=0;
+        i=1;
     }
 
 
@@ -29,27 +31,30 @@ public class PrintSpooler {
     }
     public void resetPosition() {
         if (!spooler.isEmpty()) {
-            i = 0;
+            i = 1;
             index = numberPages(this.spooler.get(0).getNumberPages(), this.spooler.get(0).getArchive().getPages());
         }
     }
-    public void printing() {
+    public void printing() throws InterruptedException {
+        warningMessages = new WarningMessages(this);
         if (!this.spooler.isEmpty()) {
                 if (this.printerController.checkSheets(this.spooler.get(0).getSize())) {
                     if (this.printerController.hasSufficientInk(this.spooler.get(0).isColor(), this.spooler.get(0).getSize(),numberPages(this.spooler.get(0).getNumberPages(),this.spooler.get(0).getArchive().getPages()))) {
-                        while (index>=0) {
+                        while (i<=index) {
+                            //warningMessages = new WarningMessages(this);
                             StringBuilder msg = new StringBuilder();
                             msg.append("imprimiendo página: ").append(i).append(" de ").append(index).append(": ").append(this.spooler.get(0).getArchive().getName());
                             printerController.consumeInk(this.spooler.get(0).getSize(), this.spooler.get(0).isColor(), 1);
                             printerController.consumeSheets(this.spooler.get(0).getSize(), 1);
-                            index--;
-                            i++;
-                            warningMessages.printingFile(String.valueOf(msg));
-                            if (index == 0) {
+                            System.out.println(String.valueOf(msg));
+                            warningMessages.printingFile(String.valueOf(msg)).run();
+
+                            if (i == index) {
                                 this.spooler.remove(0);
                                 break;
                             }
-
+                            //Thread.sleep(3000);
+                            i++;
                         }
                     } else {
                         warningMessages.lowInkWarning(String.valueOf(this.printerController.showLowInk(this.spooler.get(0).isColor(), this.spooler.get(0).getSize())));

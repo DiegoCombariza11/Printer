@@ -95,40 +95,31 @@ public class AddToSpooler extends JFrame {
         addButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                try {
-                    if (validateInput()) {
+                    if (!validateInput()) {
                         nameField.requestFocus();
                     } else {
                         printSpooler.addFileToTail(createFileToPrint(), processString(priorityBox.getSelectedItem()));
                         nameField.requestFocus();
+                        myWarningMessages = new WarningMessages();
                         myWarningMessages.inputWarning("Archivo añadido");
                         restartFields();
                     }
-                } catch (NumberFormatException f) {
-                    System.out.println("Uepa, casilla vacía");
-                }
             }
         });
 
         finishButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                try {
-                    if (validateInput()) {
+                    if (!validateInput()) {
                         nameField.requestFocus();
-                        myMainWindow.setState(true);
                     } else {
                         printSpooler.addFileToTail(createFileToPrint(), processString(priorityBox.getSelectedItem()));
-                        nameField.requestFocus();
+                        myWarningMessages = new WarningMessages();
                         myWarningMessages.inputWarning("Archivo añadido");
                         restartFields();
                         dispose();
                         myMainWindow.setState(true);
-
                     }
-                } catch (NumberFormatException f) {
-                    System.out.println("Uepa, casilla vacía");
-                }
             }
         });
 
@@ -156,39 +147,42 @@ public class AddToSpooler extends JFrame {
         }
         return itemToString;
     }
-
     public boolean validateInput() {
+        String name = nameField.getText().trim();
+        String pages = pagesField.getText().trim();
+        String pagesToPrint = pagesToPrintField.getText().trim();
         boolean flag = true;
-        String name = nameField.getText();
-        String pages = pagesField.getText();
-        String pagesToPrint = pagesToPrintField.getText();
-            if (name == null || name.trim().isEmpty()) {
-                myWarningMessages.inputWarning("Nombre vacío");
-            } else {
-                if (name.contains(".") && (name.contains("docs") || name.contains("docx") || name.contains("pdf") || name.contains("pptc") || name.contains("png") || name.contains("jpg"))) {
-                    flag = true;
-                } else {
-                    myWarningMessages.inputWarning("Extensión no válida");
+
+        myWarningMessages = new WarningMessages();
+        if (name.isEmpty()) {
+            myWarningMessages.inputWarning("Nombre vacío");
+            flag = false;
+        } else if (!name.matches(".*(\\.docs|\\.docx|\\.a|\\.pdf|\\.pptc|\\.png|\\.jpg)$")) {
+            myWarningMessages.inputWarning("Extensión no válida");
+            flag = false;
+        }
+        if (pages.isEmpty()) {
+            myWarningMessages.inputWarning("Número de páginas vacío");
+            flag = false;
+        } else {
+            try {
+                int numPages = Integer.parseInt(pages);
+                if (numPages <= 0 || numPages > 250) {
+                    throw new NumberFormatException();
                 }
-            }
-            if (pages == null || pages.trim().isEmpty()) {
-                myWarningMessages.inputWarning("Número de páginas vacío");
-            } else {
-                if (Integer.parseInt(pages) > 0&&Integer.parseInt(pages) <=250) {
-                    flag = true;
-                } else {
-                    myWarningMessages.inputWarning("Número de paginas inválida");
-                }
-            }
-            if (pagesToPrint == null || pagesToPrint.trim().isEmpty()) {
-                myWarningMessages.inputWarning("rango inválido");
-            } else {
+            } catch (NumberFormatException e) {
+                myWarningMessages.inputWarning("Número de páginas inválido");
                 flag = false;
             }
-            return flag;
+        }
+        if (pagesToPrint.isEmpty()) {
+
+            myWarningMessages.inputWarning("Rango inválido");
+            flag = false;
+        }
+
+        return flag;
     }
-
-
 
 
     public boolean validateColor(Object object){
